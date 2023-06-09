@@ -13,8 +13,8 @@ void main() {
     expect(productsRepository.getProduct('1'), kTestProducts[0]);
   });
 
-  test('getProduct(1) returns first item', () {
+  test('getProduct(100) returns null', () {
     final productsRepository = FakeProductsRepository();
-    expect(() => productsRepository.getProduct('100'), throwsStateError);
+    expect(productsRepository.getProduct('100'), null);
   });
 }
