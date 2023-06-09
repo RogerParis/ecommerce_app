@@ -18,7 +18,7 @@ class ProductsGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsListValue = ref.watch(productsListFutureProvider);
+    final productsListValue = ref.watch(productsListStreamProvider);
     return AsyncValueWidget<List<Product>>(
       value: productsListValue,
       data: (products) => products.isEmpty
@@ -36,7 +36,7 @@ class ProductsGrid extends ConsumerWidget {
                   product: product,
                   onPressed: () => context.goNamed(
                     AppRoute.product.name,
-                    params: {'id': product.id},
+                    pathParameters: {'id': product.id},
                   ),
                 );
               },

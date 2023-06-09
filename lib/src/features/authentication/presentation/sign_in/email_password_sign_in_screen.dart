@@ -80,8 +80,8 @@ class _EmailPasswordSignInContentsState
     setState(() => _submitted = true);
     // only submit the form if validation passes
     if (_formKey.currentState!.validate()) {
-      final controller = ref
-          .read(emailPasswordSignInNotifierProvider(widget.formType).notifier);
+      final controller = ref.read(
+          emailPasswordSignInControllerProvider(widget.formType).notifier);
       final success = await controller.submit(email, password);
       if (success) {
         widget.onSignedIn?.call();
@@ -106,7 +106,7 @@ class _EmailPasswordSignInContentsState
   void _updateFormType(EmailPasswordSignInFormType formType) {
     // * Toggle between register and sign in form
     ref
-        .read(emailPasswordSignInNotifierProvider(widget.formType).notifier)
+        .read(emailPasswordSignInControllerProvider(widget.formType).notifier)
         .updateFormType(formType);
     // * Clear the password field when doing so
     _passwordController.clear();
@@ -115,12 +115,12 @@ class _EmailPasswordSignInContentsState
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-        emailPasswordSignInNotifierProvider(widget.formType)
-            .select((state) => state.value), (_, state) {
-      return state.showAlertDialogOnError(context);
-    });
+      emailPasswordSignInControllerProvider(widget.formType)
+          .select((state) => state.value),
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final state =
-        ref.watch(emailPasswordSignInNotifierProvider(widget.formType));
+        ref.watch(emailPasswordSignInControllerProvider(widget.formType));
     return ResponsiveScrollableCard(
       child: FocusScope(
         node: _node,
