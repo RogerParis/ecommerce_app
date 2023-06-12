@@ -7,7 +7,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -19,6 +19,7 @@ dependencies:
   go_router: 7.0.0
   flutter_riverpod: 2.3.6
   rxdart: 0.27.7
+  mocktail: 0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -30,12 +31,12 @@ flutter_icons:
   ios: true
   android: true
   remove_alpha_ios: true
-  image_path_ios: "assets/app-icon.png"
-  image_path_android: "assets/app-icon.png"
+  image_path_ios: 'assets/app-icon.png'
+  image_path_android: 'assets/app-icon.png'
   # https://github.com/fluttercommunity/flutter_launcher_icons/issues/144
-  adaptive_icon_background: "assets/app-icon-background.png"
-  adaptive_icon_foreground: "assets/app-icon-foreground.png"
-  
+  adaptive_icon_background: 'assets/app-icon-background.png'
+  adaptive_icon_foreground: 'assets/app-icon-foreground.png'
+
 flutter:
   uses-material-design: true
 
