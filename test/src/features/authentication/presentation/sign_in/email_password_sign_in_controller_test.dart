@@ -60,6 +60,55 @@ void main() {
         Duration(milliseconds: 500),
       ),
     );
+
+    test(
+      '''
+      Given formType is signIn
+      When signInWithEmailAndPassword fails
+      Then return false
+      And state is AsyncError
+      ''',
+      () async {
+        // setup
+        final authRepository = MockAuthRepository();
+        final exception = Exception('Connection failed');
+        when(
+          () => authRepository.signInWithEmailAndPassword(
+              testEmail, testPassword),
+        ).thenThrow(exception);
+        final controller = EmailPasswordSignInController(
+          formType: EmailPasswordSignInFormType.signIn,
+          authRepository: authRepository,
+        );
+
+        // expect later
+        expectLater(
+          controller.stream,
+          emitsInOrder(
+            [
+              EmailPasswordSignInState(
+                formType: EmailPasswordSignInFormType.signIn,
+                value: const AsyncLoading<void>(),
+              ),
+              predicate<EmailPasswordSignInState>((state) {
+                expect(state.formType, EmailPasswordSignInFormType.signIn);
+                expect(state.value.hasError, true);
+                return true;
+              })
+            ],
+          ),
+        );
+
+        // run
+        final result = await controller.submit(testEmail, testPassword);
+
+        // verify
+        expect(result, false);
+      },
+      timeout: const Timeout(
+        Duration(milliseconds: 500),
+      ),
+    );
   });
   group('updateFormType', () {});
 }
