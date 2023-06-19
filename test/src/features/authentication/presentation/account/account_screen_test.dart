@@ -12,5 +12,16 @@ void main() {
         ),
       ),
     );
+
+    final logoutButton = find.text('Logout');
+    expect(logoutButton, findsOneWidget);
+    await tester.tap(logoutButton);
+    await tester.pump();
+    final dialogTitle = find.text('Are you sure?');
+    expect(dialogTitle, findsOneWidget);
+    final cancelButton = find.text('Cancel');
+    await tester.tap(cancelButton);
+    await tester.pump();
+    expect(dialogTitle, findsNothing);
   });
 }
