@@ -14,7 +14,7 @@ class AuthRobot {
   final WidgetTester tester;
 
   Future<void> openEmailPasswordSignInScreen() async {
-    final finder = find.byKey((MoreMenuButton.signInKey));
+    final finder = find.byKey(MoreMenuButton.signInKey);
     expect(finder, findsOneWidget);
     await tester.tap(finder);
     await tester.pumpAndSettle();
@@ -24,24 +24,29 @@ class AuthRobot {
     required FakeAuthRepository authRepository,
     required EmailPasswordSignInFormType formType,
     VoidCallback? onSignedIn,
-  }) async {
-    return tester.pumpWidget(ProviderScope(
-      overrides: [authRepositoryProvider.overrideWithValue(authRepository)],
-      child: MaterialApp(
-        home: Scaffold(
-          body: EmailPasswordSignInContents(
-            formType: formType,
+  }) {
+    return tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(authRepository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: EmailPasswordSignInContents(
+              formType: formType,
+              onSignedIn: onSignedIn,
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 
   Future<void> tapEmailAndPasswordSubmitButton() async {
     final primaryButton = find.byType(PrimaryButton);
     expect(primaryButton, findsOneWidget);
     await tester.tap(primaryButton);
-    await tester.pump();
+    await tester.pumpAndSettle();
   }
 
   Future<void> enterEmail(String email) async {

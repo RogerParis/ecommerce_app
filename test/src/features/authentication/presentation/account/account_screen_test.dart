@@ -14,8 +14,7 @@ void main() {
     await r.tapCancelButton();
     r.expectLogoutDialogNotFound();
   });
-
-  testWidgets('Confirm logout success', (tester) async {
+  testWidgets('Confirm logout, success', (tester) async {
     final r = AuthRobot(tester);
     await r.pumpAccountScreen();
     await r.tapLogoutButton();
@@ -24,15 +23,14 @@ void main() {
     r.expectLogoutDialogNotFound();
     r.expectErrorAlertNotFound();
   });
-
-  testWidgets('Confirm logout failure', (tester) async {
+  testWidgets('Confirm logout, failure', (tester) async {
     final r = AuthRobot(tester);
     final authRepository = MockAuthRepository();
     final exception = Exception('Connection Failed');
     when(authRepository.signOut).thenThrow(exception);
     when(authRepository.authStateChanges).thenAnswer(
       (_) => Stream.value(
-        const AppUser(uid: '123', email: 'test2test.com'),
+        const AppUser(uid: '123', email: 'test@test.com'),
       ),
     );
     await r.pumpAccountScreen(authRepository: authRepository);
@@ -41,24 +39,19 @@ void main() {
     await r.tapDialogLogoutButton();
     r.expectErrorAlertFound();
   });
-
-  testWidgets('Confirm logout loading state', (tester) async {
+  testWidgets('Confirm logout, loading state', (tester) async {
     final r = AuthRobot(tester);
     final authRepository = MockAuthRepository();
     when(authRepository.signOut).thenAnswer(
-      (_) => Future.delayed(
-        const Duration(
-          seconds: 1,
-        ),
-      ),
+      (_) => Future.delayed(const Duration(seconds: 1)),
     );
     when(authRepository.authStateChanges).thenAnswer(
       (_) => Stream.value(
-        const AppUser(uid: '123', email: 'test2test.com'),
+        const AppUser(uid: '123', email: 'test@test.com'),
       ),
     );
+    await r.pumpAccountScreen(authRepository: authRepository);
     await tester.runAsync(() async {
-      await r.pumpAccountScreen(authRepository: authRepository);
       await r.tapLogoutButton();
       r.expectLogoutDialogFound();
       await r.tapDialogLogoutButton();

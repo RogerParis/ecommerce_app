@@ -37,14 +37,12 @@ class Robot {
   Future<void> openPopupMenu() async {
     final finder = find.byType(MoreMenuButton);
     final matches = finder.evaluate();
-
-    // if an item is found it mens we are running on a small window
-    // and can tap to reveal the menu
+    // if an item is found, it means that we're running
+    // on a small window and can tap to reveal the menu
     if (matches.isNotEmpty) {
       await tester.tap(finder);
       await tester.pumpAndSettle();
     }
-
-    //else no op as the items are already visible
+    // else no-op, as the items are already visible
   }
 }
